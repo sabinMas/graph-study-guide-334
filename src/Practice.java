@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -69,8 +71,28 @@ public class Practice {
    * @return a sorted list of all reachable vertex values by 
    */
   public static List<Integer> sortedReachable(Vertex<Integer> starting) {
-    return null;
-  }
+   List<Integer> values = new ArrayList<>();
+    if (starting == null) {
+      return values;
+    }
+    //dfs using the starting point  and a new hashset
+    sortedReachableDfs(starting, new HashSet<>(), values);
+    //this will sort them in ascending orders
+    Collections.sort(values);
+      return values;
+    }
+    // helper method recursive DFS that appends each newly-visited vertex's data values.
+    private static void sortedReachableDfs(Vertex<Integer> current, Set<Vertex<Integer>> visited, List<Integer> values) {
+        //skip all verticies we've already seen
+      if (!visited.add(current)) {
+        return;
+      }
+      values.add(current.data);
+      
+      for (Vertex<Integer> neighbor : current.neighbors) {
+        sortedReachableDfs(neighbor, visited, values);
+        }
+    }
 
   /**
    * Returns a sorted list of all values reachable from the given starting vertex in the provided graph.
