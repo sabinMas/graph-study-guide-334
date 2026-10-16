@@ -113,7 +113,7 @@ public class Practice {
     sortedReachDfs(graph, starting, visited);
 
     List<Integer> result = new ArrayList<>(visited);
-    Collection.sort(result);
+    Collections.sort(result);
     return result;
 
   }
