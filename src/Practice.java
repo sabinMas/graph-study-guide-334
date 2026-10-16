@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -81,7 +82,7 @@ public class Practice {
     Collections.sort(values);
       return values;
     }
-    // helper method recursive DFS that appends each newly-visited vertex's data values.
+    // helper DFS method to track values so we can sort them 
     private static void sortedReachableDfs(Vertex<Integer> current, Set<Vertex<Integer>> visited, List<Integer> values) {
         //skip all verticies we've already seen
       if (!visited.add(current)) {
@@ -105,7 +106,26 @@ public class Practice {
    * @return a sorted list of all reachable vertex values
    */
   public static List<Integer> sortedReachable(Map<Integer, Set<Integer>> graph, int starting) {
-    return null;
+    if (!graph.containsKey(starting)) {
+        return new ArrayList<>(); 
+      }
+    Set<Integer> visited = new HashSet<>();
+    sortedReachDfs(graph, starting, visited);
+
+    List<Integer> result = new ArrayList<>(visited);
+    Collection.sort(result);
+    return result;
+
+  }
+
+  private static void sortedReachDfs(Map<Integer, Set<Integer>> graph, int current, Set<Integer> visited){
+    if (!visited.add(current)) {
+      return;
+    }
+    for(int neighbor : graph.getOrDefault(current,Collections.emptySet())) {
+      sortedReachDfs(graph, neighbor, visited);
+    }
+
   }
 
   /**
