@@ -295,6 +295,28 @@ public class Practice {
    * @return an unsorted list of next moves
    */
   public static List<int[]> nextMoves(char[][] board, int[] current, int[][] directions) {
-    return null;
+   List<int[]> moves = new ArrayList<>();
+
+  //try all directions around
+  for(int[] dir : directions) {
+    int newRow = current[0] + dir[0];
+    int newCol = current[1] + dir[1];
+
+  //helper methods from below to help check bounds and if path is X
+    if(!isInBounds(board, newRow, newCol)) continue;
+    if(isBlocked(board,newRow,newCol)) continue;
+
+    //validate moves
+    moves.add(new int[]{newRow, newCol});
+  }
+  return moves;
+}
+  //helper method 1 to check boundaries of board
+  private static boolean isInBounds(char[][] board, int row, int col){
+    return row >= 0 && row < board.length && col >= 0 && col < board[0].length;
+  }
+  //helper method 2 to validate move and check if square is 'X'
+  private static boolean isBlocked(char[][] board, int row, int col){
+    return board[row][col] == 'X';
   }
 }
