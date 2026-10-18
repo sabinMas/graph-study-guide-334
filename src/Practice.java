@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Objects;
 
 public class Practice {
 
@@ -181,7 +182,7 @@ public class Practice {
    * @return whether there exists a valid positive path from starting to ending
    */
   public static boolean positivePathExists(Map<Integer, Set<Integer>> graph, int starting, int ending) {
-    if(starting <= 0 || ending <= 0 || !graph.containsKey(starting) || !graph.containsKey(ending) {
+    if(starting <= 0 || ending <= 0 || !graph.containsKey(starting) || !graph.containsKey(ending)) {
       return false;
     }
     return positiveDfs(graph, starting, ending, new HashSet<>());
@@ -191,7 +192,7 @@ public class Practice {
     if (current == ending) return true;
     visited.add(current);
     for(int neighbor: graph.getOrDefault(current,Collections.emptySet())) {
-      if(neighbor >= 0 && !visited.contains(neighbor)) && positiveDfs(graph, neighbor, ending, visited)) {
+      if(neighbor >= 0 && !visited.contains(neighbor) && positiveDfs(graph, neighbor, ending, visited)) {
         return true;
       }
     }
@@ -209,6 +210,20 @@ public class Practice {
    * @return true if a person in the extended network works at the specified company, false otherwise
    */
   public static boolean hasExtendedConnectionAtCompany(Professional person, String companyName) {
+    if(person == null) return false;
+
+    return companyDfs(person, companyName, new HashSet<>());
+  }
+  private static boolean companyDfs(Professional current, String companyName, Set<Professional> visited) {
+    if(!visited.add(current)) return false;
+
+    if(Objects.equals(current.getCompany(), companyName)) return true;
+
+    for(Professional connection : current.getConnections()) {
+      if(companyDfs(connection, companyName, visited)) {
+        return true;
+      }
+    }
     return false;
   }
 
