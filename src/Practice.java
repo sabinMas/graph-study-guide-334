@@ -29,29 +29,49 @@ public class Practice {
    * @param starting the starting vertex (may be null)
    * @return the number of vertices with odd values reachable from the starting vertex
    */
-  public static int oddVertices(Vertex<Integer> starting) {
-    if(starting == null){
-    return 0;
-    }
-    //visited set to track
-    Set<Vertex<Integer>> visited = new HashSet<>();
+    public static int oddVertices(Vertex<Integer> starting) {
+      //null case
+      if(starting == null) return 0;
 
-    //return the helper method passing in the two parameters
-    return oddVerticesDfs(starting, visited);
+      Set<Vertex<Integer>> seen = new HashSet<>();
+      //call recursive helper method below with params
+      return reachableOdds(starting, seen);
+
+    }
+    private static int reachableOdds(Vertex<Integer> current, Set<Vertex<Integer>> seen){
+      if(!seen.add(current)) return 0;
+      //hold results in a count variable
+      //using the ternary operator for my if else
+      int count = (current.data % 2 != 0) ? 1 : 0;
+      //recurse neighbors
+      for(Vertex<Integer> neighbor : current.neighbors){
+        count += reachableOdds(neighbor, seen);
+      }
+      return count;
+
   }
-  private static int oddVerticesDfs(Vertex<Integer> current, Set<Vertex<Integer>> visited) {
-  // base case 
-    if (!visited.add(current)) {
-    return 0;
-    }
-    // count current vertex if its value is odd
-    int count = (current.data % 2 != 0) ? 1 : 0;
-    // recurse into all neighbors and add up what they find
-    for (Vertex<Integer> neighbor : current.neighbors) {
-    count += oddVerticesDfs(neighbor, visited);
-    }
-    return count;
-    }
+  //   if(starting == null){
+  //   return 0;
+  //   }
+  //   //visited set to track
+  //   Set<Vertex<Integer>> visited = new HashSet<>();
+
+  //   //return the helper method passing in the two parameters
+  //   return oddVerticesDfs(starting, visited);
+  // }
+  // private static int oddVerticesDfs(Vertex<Integer> current, Set<Vertex<Integer>> visited) {
+  // // base case 
+  //   if (!visited.add(current)) {
+  //   return 0;
+  //   }
+  //   // count current vertex if its value is odd
+  //   int count = (current.data % 2 != 0) ? 1 : 0;
+  //   // recurse into all neighbors and add up what they find
+  //   for (Vertex<Integer> neighbor : current.neighbors) {
+  //   count += oddVerticesDfs(neighbor, visited);
+  //   }
+  //   return count;
+  //   }
 
 
   /**
@@ -73,28 +93,46 @@ public class Practice {
    * @return a sorted list of all reachable vertex values by 
    */
   public static List<Integer> sortedReachable(Vertex<Integer> starting) {
-   List<Integer> values = new ArrayList<>();
-    if (starting == null) {
+    List<Integer> values = new ArrayList<>();
+      if(starting == null) return values;
+
+      //call dfs using starting point
+      sortedReachDfs(starting, new HashSet<>(), values);
+      //sort
+      Collections.sort(values); 
       return values;
+  }
+  private static void sortedReachDfs(Vertex<Integer> current, Set<Vertex<Integer>> visited, List<Integer> values){
+    if(!visited.add(current)) return;
+    values.add(current.data);
+
+    for (Vertex<Integer> neighbor : current.neighbors) {
+      sortedReachDfs(neighbor, visited, values);
     }
-    //dfs using the starting point  and a new hashset
-    sortedReachableDfs(starting, new HashSet<>(), values);
-    //this will sort them in ascending orders
-    Collections.sort(values);
-      return values;
-    }
-    // helper DFS method to track values so we can sort them 
-    private static void sortedReachableDfs(Vertex<Integer> current, Set<Vertex<Integer>> visited, List<Integer> values) {
-        //skip all verticies we've already seen
-      if (!visited.add(current)) {
-        return;
-      }
-      values.add(current.data);
+  }
+
+  //  List<Integer> values = new ArrayList<>();
+  //   if (starting == null) {
+  //     return values;
+  //   }
+  //   //dfs using the starting point  and a new hashset
+  //   sortedReachableDfs(starting, new HashSet<>(), values);
+  //   //this will sort them in ascending orders
+  //   Collections.sort(values);
+  //     return values;
+  //   }
+  //   // helper DFS method to track values so we can sort them 
+  //   private static void sortedReachableDfs(Vertex<Integer> current, Set<Vertex<Integer>> visited, List<Integer> values) {
+  //       //skip all verticies we've already seen
+  //     if (!visited.add(current)) {
+  //       return;
+  //     }
+  //     values.add(current.data);
       
-      for (Vertex<Integer> neighbor : current.neighbors) {
-        sortedReachableDfs(neighbor, visited, values);
-        }
-    }
+  //     for (Vertex<Integer> neighbor : current.neighbors) {
+  //       sortedReachableDfs(neighbor, visited, values);
+  //       }
+  //   }
 
   /**
    * Returns a sorted list of all values reachable from the given starting vertex in the provided graph.
