@@ -145,27 +145,48 @@ public class Practice {
    * @return a sorted list of all reachable vertex values
    */
   public static List<Integer> sortedReachable(Map<Integer, Set<Integer>> graph, int starting) {
-    if (!graph.containsKey(starting)) {
-        return new ArrayList<>(); 
-      }
+    if(!graph.containsKey(starting)) return new ArrayList<>();
+
     Set<Integer> visited = new HashSet<>();
-    sortedReachDfs(graph, starting, visited);
+    //sorted reach dfs recursive helper
+    sortedMap(graph, starting, visited);
 
-    List<Integer> result = new ArrayList<>(visited);
-    Collections.sort(result);
-    return result;
-
+    List<Integer> results = new ArrayList<>(visited);
+    Collections.sort(results);
+    return results;
   }
+  private static void sortedMap(Map<Integer, Set<Integer>> graph, int current, Set<Integer> visited){
+    if(!visited.add(current)) return;
 
-  private static void sortedReachDfs(Map<Integer, Set<Integer>> graph, int current, Set<Integer> visited){
-    if (!visited.add(current)) {
-      return;
+    for(int neighbor : graph.getOrDefault(current, Collections.emptySet())){
+      sortedMap(graph, neighbor, visited);
     }
-    for(int neighbor : graph.getOrDefault(current,Collections.emptySet())) {
-      sortedReachDfs(graph, neighbor, visited);
-    }
-
   }
+  
+  
+  
+  
+  
+    //   if (!graph.containsKey(starting)) {
+  //       return new ArrayList<>(); 
+  //     }
+  //   Set<Integer> visited = new HashSet<>();
+  //   sortedReachDfs(graph, starting, visited);
+
+  //   List<Integer> result = new ArrayList<>(visited);
+  //   Collections.sort(result);
+  //   return result;
+
+  // }
+
+  // private static void sortedReachDfs(Map<Integer, Set<Integer>> graph, int current, Set<Integer> visited){
+  //   if (!visited.add(current)) {
+  //     return;
+  //   }
+  //   for(int neighbor : graph.getOrDefault(current,Collections.emptySet())) {
+  //     sortedReachDfs(graph, neighbor, visited);
+  //   }
+  //`}
 
   /**
    * Returns true if and only if it is possible both to reach v2 from v1 and to reach v1 from v2.
