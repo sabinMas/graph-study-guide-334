@@ -270,21 +270,42 @@ public class Practice {
    */
   public static boolean hasExtendedConnectionAtCompany(Professional person, String companyName) {
     if(person == null) return false;
-
-    return companyDfs(person, companyName, new HashSet<>());
+    //return the recursive dfs method
+    return dfs(person,  new HashSet<>(), companyName);
   }
-  private static boolean companyDfs(Professional current, String companyName, Set<Professional> visited) {
+  private static boolean dfs(Professional current, Set<Professional> visited, String companyName){
     if(!visited.add(current)) return false;
-
-    if(Objects.equals(current.getCompany(), companyName)) return true;
-
-    for(Professional connection : current.getConnections()) {
-      if(companyDfs(connection, companyName, visited)) {
-        return true;
-      }
+    if (Objects.equals(current.getCompany(), companyName)) return true;
+    for(Professional connection : current.getConnections()){
+      if(dfs(connection, visited, companyName )) return true;
     }
     return false;
   }
+
+
+  
+  
+  
+  
+  
+  
+  
+  //   if(person == null) return false;
+
+  //   return companyDfs(person, companyName, new HashSet<>());
+  // }
+  // private static boolean companyDfs(Professional current, String companyName, Set<Professional> visited) {
+  //   if(!visited.add(current)) return false;
+
+  //   if(Objects.equals(current.getCompany(), companyName)) return true;
+
+  //   for(Professional connection : current.getConnections()) {
+  //     if(companyDfs(connection, companyName, visited)) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
   /**
    * Returns a list of possible next moves starting from a given position.
