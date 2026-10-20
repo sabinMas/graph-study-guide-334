@@ -30,26 +30,65 @@ public class Practice {
    * @return the number of vertices with odd values reachable from the starting vertex
    */
     public static int oddVertices(Vertex<Integer> starting) {
-      //null case
       if(starting == null) return 0;
+      Set<Vertex<Integer>> visited = new HashSet();
 
-      Set<Vertex<Integer>> seen = new HashSet<>();
-      //call recursive helper method below with params
-      return reachableOdds(starting, seen);
-
+      //call dfs to solve odd reachable
+      return dfs(visited, starting);
     }
-    private static int reachableOdds(Vertex<Integer> current, Set<Vertex<Integer>> seen){
-      if(!seen.add(current)) return 0;
-      //hold results in a count variable
-      //using the ternary operator for my if else
-      int count = (current.data % 2 != 0) ? 1 : 0;
-      //recurse neighbors
+    private static int dfs(Set<Vertex<Integer>> visited, Vertex<Integer> current){
+      if(!visited.add(current)) return 0;
+      int count = 0;
+
       for(Vertex<Integer> neighbor : current.neighbors){
-        count += reachableOdds(neighbor, seen);
+        if(current.data % 2 != 0){ 
+          count = 1;
+        }else{
+          count = 0;
+        }
+       
       }
       return count;
+    }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      //     //null case
+  //     if(starting == null) return 0;
 
-  }
+  //     Set<Vertex<Integer>> seen = new HashSet<>();
+  //     //call recursive helper method below with params
+  //     return reachableOdds(starting, seen);
+
+  //   }
+  //   private static int reachableOdds(Vertex<Integer> current, Set<Vertex<Integer>> seen){
+  //     if(!seen.add(current)) return 0;
+  //     //hold results in a count variable
+  //     //using the ternary operator for my if else
+  //     int count = (current.data % 2 != 0) ? 1 : 0;
+  //     //recurse neighbors
+  //     for(Vertex<Integer> neighbor : current.neighbors){
+  //       count += reachableOdds(neighbor, seen);
+  //     }
+  //     return count;
+
+  // }
   //   if(starting == null){
   //   return 0;
   //   }
@@ -94,22 +133,66 @@ public class Practice {
    */
   public static List<Integer> sortedReachable(Vertex<Integer> starting) {
     List<Integer> values = new ArrayList<>();
-      if(starting == null) return values;
 
-      //call dfs using starting point
-      sortedReachDfs(starting, new HashSet<>(), values);
-      //sort
-      Collections.sort(values); 
-      return values;
-  }
-  private static void sortedReachDfs(Vertex<Integer> current, Set<Vertex<Integer>> visited, List<Integer> values){
+    if(starting == null) return values;
+
+    //call dfs method here
+    dfs(values, starting, new HashSet<>());
+    //sort using collections here
+    Collections.sort(values);
+    return values;
+  } 
+  private static void dfs(List<Integer> values, Vertex<Integer> current, Set<Vertex<Integer>> visited){
     if(!visited.add(current)) return;
+    //add to list of visited 
     values.add(current.data);
 
-    for (Vertex<Integer> neighbor : current.neighbors) {
-      sortedReachDfs(neighbor, visited, values);
+    for(Vertex<Integer> neighbor : current.neighbors){
+      dfs(values, neighbor, visited);
     }
   }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    //   List<Integer> values = new ArrayList<>();
+  //     if(starting == null) return values;
+
+  //     //call dfs using starting point
+  //     sortedReachDfs(starting, new HashSet<>(), values);
+  //     //sort
+  //     Collections.sort(values); 
+  //     return values;
+  // }
+  // private static void sortedReachDfs(Vertex<Integer> current, Set<Vertex<Integer>> visited, List<Integer> values){
+  //   if(!visited.add(current)) return;
+  //   values.add(current.data);
+
+  //   for (Vertex<Integer> neighbor : current.neighbors) {
+  //     sortedReachDfs(neighbor, visited, values);
+  //   }
+  // }
 
   //  List<Integer> values = new ArrayList<>();
   //   if (starting == null) {
